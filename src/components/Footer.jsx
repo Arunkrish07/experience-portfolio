@@ -6,7 +6,7 @@ import { contact, profile } from '../data'
 export default function Footer() {
   return (
     <footer id="contact" data-nav-label="thank you" className="border-t border-ink/10 px-6 pb-10 pt-24 md:px-10">
-      <div className="grid gap-14 md:grid-cols-2 md:gap-20">
+      <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
         {/* left: heading + contact details */}
         <div>
           <h2 className="serif text-5xl leading-[0.95] sm:text-6xl md:text-8xl">
@@ -19,7 +19,7 @@ export default function Footer() {
           <Reveal className="mt-12 space-y-5">
             <div>
               <p className="text-xs uppercase tracking-wide text-muted">Email</p>
-              <a href={`mailto:${contact.email}`} className="break-token serif text-lg underline-offset-4 hover:underline sm:text-2xl">
+              <a href={`mailto:${contact.email}`} className="break-token serif text-xl underline-offset-4 hover:underline md:text-2xl">
                 {contact.email}
               </a>
             </div>
