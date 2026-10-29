@@ -27,11 +27,14 @@ function PhoneCard({ project, i, count, progress, cfg, showLabel }) {
           </Phone>
         </a>
         {showLabel && (
-          <motion.div style={{ opacity: labelOpacity }} className="mt-4 flex flex-col items-center">
-            <p className="text-sm text-paper/60">
+          <motion.div
+            style={{ opacity: labelOpacity, width: cfg.w }}
+            className="mt-4 flex flex-col items-center text-center"
+          >
+            <p className="text-xs leading-snug text-paper/70">
               <span className="text-paper">{project.index}.</span> {project.name}
             </p>
-            <span className="hand text-xl text-accent">{project.tag}</span>
+            <span className="hand mt-0.5 text-lg leading-tight text-accent">{project.tag}</span>
           </motion.div>
         )}
       </motion.div>

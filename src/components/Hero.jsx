@@ -88,31 +88,33 @@ export default function Hero() {
         />
       ))}
 
-      {/* handwritten signature + arrow */}
-      <motion.div
-        className="pointer-events-none absolute right-4 top-20 z-20 text-right sm:right-8 md:right-16 md:top-24"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1, duration: 0.7 }}
-      >
-        <Handwrite
-          text={profile.heroSignature}
-          start="mount"
-          delay={0.6}
-          stagger={0.09}
-          caret
-          color="#7D84EF"
-          className="hand inline-flex items-end text-2xl sm:text-4xl md:text-5xl"
-        />
-        <svg className="ml-auto mt-1 block h-7 w-16 md:h-10 md:w-24" viewBox="0 0 150 110" fill="none">
-          <path d="M140 10 C 90 20, 40 35, 18 85" stroke="#7D84EF" strokeWidth="3" strokeLinecap="round" />
-          <path d="M8 70 L18 88 L34 80" stroke="#7D84EF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </motion.div>
-
       {/* giant display word with scroll-driven split + orbiting star */}
       <div className="relative z-0 flex flex-1 items-center justify-center">
-        <HeroTitle text={profile.heroWord} progress={progress} />
+        <div className="relative inline-block">
+          {/* handwritten signature + arrow, anchored to the word's top-right */}
+          <motion.div
+            className="pointer-events-none absolute right-2 top-0 z-20 -translate-y-[88%] text-right sm:right-6 md:right-10"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.7 }}
+          >
+            <Handwrite
+              text={profile.heroSignature}
+              start="mount"
+              delay={0.6}
+              stagger={0.09}
+              caret
+              color="#7D84EF"
+              className="hand inline-flex items-end text-3xl sm:text-4xl md:text-5xl"
+            />
+            <svg className="ml-auto mt-1 block h-7 w-16 md:h-9 md:w-20" viewBox="0 0 150 110" fill="none">
+              <path d="M140 10 C 90 20, 40 35, 18 85" stroke="#7D84EF" strokeWidth="3" strokeLinecap="round" />
+              <path d="M8 70 L18 88 L34 80" stroke="#7D84EF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.div>
+
+          <HeroTitle text={profile.heroWord} progress={progress} />
+        </div>
       </div>
 
       {/* bottom meta row */}
