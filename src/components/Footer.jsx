@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="grid gap-14 md:grid-cols-2 md:gap-20">
         {/* left: heading + contact details */}
         <div>
-          <h2 className="serif text-6xl leading-none md:text-8xl">
+          <h2 className="serif text-5xl leading-[0.95] sm:text-6xl md:text-8xl">
             <RevealWord text={contact.heading} stagger={0.04} />
           </h2>
           <Reveal className="mt-4">
@@ -19,7 +19,7 @@ export default function Footer() {
           <Reveal className="mt-12 space-y-5">
             <div>
               <p className="text-xs uppercase tracking-wide text-muted">Email</p>
-              <a href={`mailto:${contact.email}`} className="serif text-2xl underline-offset-4 hover:underline">
+              <a href={`mailto:${contact.email}`} className="break-token serif text-lg underline-offset-4 hover:underline sm:text-2xl">
                 {contact.email}
               </a>
             </div>

@@ -21,16 +21,24 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  max-width: 100vw;
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* never let a single long token (emails, urls) push the layout wide */
+.break-token {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* subtle paper grain via dotted mask */
