@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/* ---- Marginalia design tokens ---- */
+@theme {
+  --color-paper: #ECEBE7;
+  --color-paper-2: #E6E4DF;
+  --color-ink: #242426;
+  --color-ink-2: #18181A;
+  --color-muted: #8A8984;
+  --color-accent: #7D84EF;
+  --color-dark: #2B2B2E;
+
+  --font-serif: "DM Serif Display", "Bodoni 72", Didot, Georgia, serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* subtle paper grain via dotted mask */
+.paper-grain {
+  background-image: radial-gradient(rgba(36, 36, 38, 0.045) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* handwritten margin notes */
+.hand {
+  font-family: var(--font-hand);
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+/* crop-mark corners for the marginalia photo frame */
+.crop-frame {
+  position: relative;
+}
+.crop-frame::before,
+.crop-frame::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-accent);
+  border-style: solid;
+}
+
+/* thin underline accent used under headings */
+.accent-rule {
+  height: 2px;
+  background: var(--color-accent);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* hide scrollbar for horizontal rails */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ---- orbiting star around the hero "o" ---- */
+@keyframes mgn-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.orbit-spin {
+  animation: mgn-orbit 7s linear infinite;
+  transform-origin: 0px 0px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-spin { animation: none; }
+}
