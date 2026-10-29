@@ -29,7 +29,7 @@ function PhoneCard({ project, i, count, progress, cfg, showLabel }) {
         {showLabel && (
           <motion.div
             style={{ opacity: labelOpacity, width: cfg.w }}
-            className="mt-4 flex flex-col items-center text-center"
+            className="mt-3 flex flex-col items-center text-center"
           >
             <p className="text-xs leading-snug text-paper/70">
               <span className="text-paper">{project.index}.</span> {project.name}
@@ -55,9 +55,9 @@ export default function ProjectsOverview() {
   const cfg = sm
     ? { w: 100, scatterX: 58, scatterRot: 6, finalGap: 66, finalRot: 4 } // mobile: light fan, more spacing (fits ~380px)
     : md
-    ? { w: 130, scatterX: 110, scatterRot: 6, finalGap: 142, finalRot: 0 } // tablet: row (fits ~768px)
-    : { w: 168, scatterX: 150, scatterRot: 6, finalGap: 188, finalRot: 0 } // desktop: row
-  const stageH = Math.round(cfg.w * 2.17) + 80
+    ? { w: 120, scatterX: 100, scatterRot: 6, finalGap: 132, finalRot: 0 } // tablet: row
+    : { w: 150, scatterX: 135, scatterRot: 6, finalGap: 168, finalRot: 0 } // desktop: row
+  const stageH = Math.round(cfg.w * 2.17) + 86
 
   return (
     <section id="projects" ref={ref} data-nav-label="projects" className="relative h-[220vh] md:h-[240vh]">
@@ -70,7 +70,7 @@ export default function ProjectsOverview() {
           <p className="hand text-xl text-accent md:text-right md:text-2xl">Hard skills? You'll find them all in here</p>
         </motion.div>
 
-        <div className="relative mx-auto mt-10 w-full" style={{ height: stageH }}>
+        <div className="relative mx-auto mt-6 w-full md:mt-8" style={{ height: stageH }}>
           {projects.map((p, i) => (
             <PhoneCard key={p.id} project={p} i={i} count={projects.length} progress={progress} cfg={cfg} showLabel={!sm} />
           ))}
