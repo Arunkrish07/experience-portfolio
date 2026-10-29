@@ -91,23 +91,37 @@ export default function Skills() {
             <span className="hand text-2xl">learning</span>
           </Reveal>
 
-          <div className="mx-auto flex max-w-sm flex-col items-center gap-[6px]">
-            {books.map((b, i) => (
-              <Reveal
-                key={b.title}
-                delay={i * 0.06}
-                x={i % 2 ? 10 : -10}
-                className="w-full"
-                style={{ width: `${100 - i * 3}%` }}
-              >
-                <div
-                  className="flex h-11 items-center justify-center rounded-[4px] text-center text-[11px] font-semibold uppercase tracking-wide shadow-sm"
-                  style={{ backgroundColor: b.bg, color: b.fg, transform: `rotate(${(i % 2 ? 1 : -1) * 0.6}deg)` }}
+          <div className="mx-auto flex max-w-sm flex-col items-center pt-2">
+            {books.map((b, i) => {
+              const rot = [-1.6, 1.2, -0.7, 1.5, -1.1][i % 5]
+              const shift = [-3, 4, -2, 3, 0][i % 5]
+              return (
+                <Reveal
+                  key={b.title}
+                  delay={i * 0.07}
+                  y={18}
+                  className="w-full"
+                  style={{ width: `${95 - i * 2.5}%`, marginTop: i === 0 ? 0 : -3, zIndex: books.length - i }}
                 >
-                  {b.title}
-                </div>
-              </Reveal>
-            ))}
+                  <div className="relative" style={{ transform: `rotate(${rot}deg) translateX(${shift}px)` }}>
+                    {/* book cover (spine facing up) */}
+                    <div
+                      className="relative flex h-12 items-center rounded-[5px] pl-7 pr-4 shadow-[0_9px_16px_-9px_rgba(0,0,0,0.6)]"
+                      style={{ backgroundColor: b.bg, color: b.fg }}
+                    >
+                      {/* spine band */}
+                      <span className="absolute left-3 top-2 bottom-2 w-[3px] rounded-full" style={{ backgroundColor: b.fg, opacity: 0.4 }} />
+                      {/* top highlight */}
+                      <span className="absolute inset-x-[5px] top-[3px] h-px rounded bg-white/15" />
+                      <span className="text-[11px] font-semibold uppercase leading-tight tracking-wide">{b.title}</span>
+                    </div>
+                    {/* page block (thickness of the book) */}
+                    <div className="mx-[3px] h-[6px] rounded-b-[4px] bg-black/25" />
+                    <div className="mx-[6px] h-[2px] rounded-b-[3px] bg-black/15" />
+                  </div>
+                </Reveal>
+              )
+            })}
           </div>
           <Reveal delay={0.2} className="mt-3 flex justify-center">
             <svg className="h-3 w-56" viewBox="0 0 220 12" fill="none" preserveAspectRatio="none">

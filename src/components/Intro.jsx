@@ -15,7 +15,7 @@ export default function Intro() {
         <p className="hand text-3xl md:text-4xl">Curriculum Vitae</p>
       </Reveal>
 
-      <div className="mt-14 grid gap-14 md:grid-cols-[320px_1fr] md:gap-20">
+      <div className="mt-14 grid gap-14 lg:grid-cols-[320px_1fr] lg:gap-20">
         {/* photo with crop-mark frame + handwritten traits */}
         <Reveal x={-20} className="relative mx-auto w-full max-w-[300px]">
           <div className="crop-frame">
