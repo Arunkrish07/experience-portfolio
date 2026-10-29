@@ -50,7 +50,7 @@ export default function ProjectsOverview() {
 
   // responsive layout config
   const cfg = sm
-    ? { w: 104, scatterX: 64, scatterRot: 7, finalGap: 48, finalRot: 7 } // mobile: overlapping fan (fits ~360px)
+    ? { w: 100, scatterX: 58, scatterRot: 6, finalGap: 66, finalRot: 4 } // mobile: light fan, more spacing (fits ~380px)
     : md
     ? { w: 130, scatterX: 110, scatterRot: 6, finalGap: 142, finalRot: 0 } // tablet: row (fits ~768px)
     : { w: 168, scatterX: 150, scatterRot: 6, finalGap: 188, finalRot: 0 } // desktop: row

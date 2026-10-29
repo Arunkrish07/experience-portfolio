@@ -48,7 +48,7 @@ export default function Skills() {
         </Reveal>
       </div>
 
-      <div className="mt-16 grid gap-16 md:grid-cols-2">
+      <div className="mt-10 grid items-start gap-16 md:grid-cols-2">
         {/* left: app icons lassoed */}
         <div className="relative">
           <Reveal className="relative inline-block">
@@ -79,7 +79,7 @@ export default function Skills() {
         </div>
 
         {/* right: book stack */}
-        <div className="relative">
+        <div className="relative md:-mt-24">
           {/* coffee doodle + annotation */}
           <Reveal className="mb-2 flex items-end justify-end gap-2">
             <svg className="h-8 w-10" viewBox="0 0 40 32" fill="none">

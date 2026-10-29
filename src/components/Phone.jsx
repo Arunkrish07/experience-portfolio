@@ -2,12 +2,16 @@
 // When a project has no `cover` image yet, a gradient of its two accent
 // colours is shown as a placeholder (swap in real screenshots later).
 
+// The screen content is authored at this fixed design width and scaled to
+// the actual phone width, so text and spacing stay in proportion at any size.
+const DESIGN_W = 220
+const DESIGN_H = (DESIGN_W * 19.5) / 9
+
 export default function Phone({ children, className = '', w = 220 }) {
-  // bezel + corners scale with the phone size → thin, realistic frame at any width
+  const s = w / DESIGN_W
   const pad = Math.max(2, Math.round(w * 0.022))
   const outer = Math.round(w * 0.155)
   const inner = Math.max(6, outer - pad)
-  const island = { w: Math.round(w * 0.32), h: Math.max(10, Math.round(w * 0.078)) }
 
   return (
     <div
@@ -19,12 +23,12 @@ export default function Phone({ children, className = '', w = 220 }) {
       <span className="absolute -left-[1.5px] top-[33%] h-[11%] w-[2px] rounded-l bg-[#26262a]" />
       <span className="absolute -right-[1.5px] top-[28%] h-[13%] w-[2px] rounded-r bg-[#26262a]" />
       <div className="relative h-full w-full overflow-hidden bg-dark" style={{ borderRadius: inner }}>
-        {/* dynamic island */}
-        <div
-          className="pointer-events-none absolute left-1/2 top-[6px] z-20 -translate-x-1/2 rounded-full bg-black"
-          style={{ width: island.w, height: island.h }}
-        />
-        {children}
+        {/* design-sized screen scaled to fit — keeps content proportional */}
+        <div style={{ width: DESIGN_W, height: DESIGN_H, transform: `scale(${s})`, transformOrigin: 'top left' }}>
+          {/* dynamic island */}
+          <div className="pointer-events-none absolute left-1/2 top-[6px] z-20 h-[18px] w-[72px] -translate-x-1/2 rounded-full bg-black" />
+          {children}
+        </div>
       </div>
     </div>
   )
