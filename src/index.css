@@ -22,6 +22,8 @@
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
+  /* keep anchored sections clear of the fixed glass nav */
+  scroll-padding-top: 92px;
 }
 
 body {
@@ -82,6 +84,87 @@ body {
 ::selection {
   background: var(--color-accent);
   color: #fff;
+}
+
+/* ============================================================
+   Liquid glass — "vellum lens" laid over the paper
+   Frosted blur everywhere; rim refraction where supported.
+   ============================================================ */
+.lg {
+  position: relative;
+  isolation: isolate;
+  --lg-tint: 255, 255, 254;      /* warm white, picks up the paper */
+  --lg-opacity: 0.24;
+  --lg-border: rgba(255, 255, 255, 0.7);
+  --lg-highlight: rgba(255, 255, 255, 0.95);
+  --lg-shadow: rgba(36, 36, 38, 0.32);
+  --lg-rim: rgba(125, 132, 239, 0.5);  /* indigo accent rim-light */
+  background: rgba(var(--lg-tint), var(--lg-opacity));
+  -webkit-backdrop-filter: blur(22px) saturate(210%) brightness(1.07);
+  backdrop-filter: blur(22px) saturate(210%) brightness(1.07);
+  border: 1px solid var(--lg-border);
+  box-shadow:
+    0 18px 50px -14px var(--lg-shadow),
+    0 4px 12px -6px var(--lg-shadow),
+    inset 0 1.5px 1.5px var(--lg-highlight),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 -18px 36px -24px rgba(255, 255, 255, 0.75);
+}
+
+/* top gloss + corner catch-light — sits above the frost, below content */
+.lg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 38%),
+    radial-gradient(130% 85% at 12% 0%, rgba(255, 255, 255, 0.55), transparent 58%);
+}
+
+/* indigo rim-light hugging the inner edge */
+.lg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 28px -4px var(--lg-rim),
+    inset 0 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* dark surfaces (over bg-dark sections) */
+.lg--dark {
+  --lg-tint: 255, 255, 255;
+  --lg-opacity: 0.12;
+  --lg-border: rgba(255, 255, 255, 0.26);
+  --lg-highlight: rgba(255, 255, 255, 0.55);
+  --lg-shadow: rgba(0, 0, 0, 0.65);
+  --lg-rim: rgba(125, 132, 239, 0.6);
+}
+
+/* indigo-tinted glass */
+.lg--accent {
+  --lg-tint: 125, 132, 239;
+  --lg-opacity: 0.2;
+  --lg-rim: rgba(125, 132, 239, 0.7);
+}
+
+/* rim refraction: Chromium honours url() backdrop filters; elsewhere the
+   blur above remains as a graceful frosted fallback */
+@supports ((-webkit-backdrop-filter: url(#lg-refract)) or (backdrop-filter: url(#lg-refract))) {
+  .lg--refract {
+    -webkit-backdrop-filter: blur(8px) saturate(210%) brightness(1.07) url(#lg-refract);
+    backdrop-filter: blur(8px) saturate(210%) brightness(1.07) url(#lg-refract);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg { transition: none; }
 }
 
 /* hide scrollbar for horizontal rails */

@@ -4,16 +4,18 @@ import Intro from './components/Intro'
 import Credentials from './components/Credentials'
 import Skills from './components/Skills'
 import ProjectsOverview from './components/ProjectsOverview'
-import CaseStudy from './components/CaseStudy'
+import CaseStudies from './components/CaseStudies'
 import HowIBuild from './components/HowIBuild'
 import FunFacts from './components/FunFacts'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
+import { GlassDefs } from './components/Glass'
 import { projects } from './data'
 
 export default function App() {
   return (
     <div className="min-h-screen bg-paper text-ink">
+      <GlassDefs />
       <ScrollProgress />
       <Header />
       <main>
@@ -22,9 +24,7 @@ export default function App() {
         <Credentials />
         <Skills />
         <ProjectsOverview />
-        {projects.map((p, i) => (
-          <CaseStudy key={p.id} project={p} flip={i % 2 === 1} dark={i % 2 === 0} />
-        ))}
+        <CaseStudies projects={projects} />
         <HowIBuild />
         <FunFacts />
         <Footer />

@@ -1,4 +1,5 @@
 import Reveal, { RevealWord } from './Reveal'
+import Glass from './Glass'
 import { highlight } from '../highlight'
 import { education, experience, quickView } from '../data'
 
@@ -18,7 +19,7 @@ export default function Credentials() {
 
       <div className="mt-12 grid gap-14 md:grid-cols-[1.4fr_1fr] md:gap-20">
         {/* left: experience + education timeline */}
-        <div className="space-y-10">
+        <Glass refract className="space-y-10 rounded-[32px] px-6 py-8 md:px-10 md:py-10">
           {experience.map((e) => (
             <Reveal key={e.company} className="border-t border-ink/15 pt-5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -51,19 +52,21 @@ export default function Credentials() {
               </Reveal>
             ))}
           </div>
-        </div>
+        </Glass>
 
         {/* right: recruiter quick view */}
-        <Reveal x={20} className="h-fit rounded-2xl border border-ink/15 bg-paper-2/60 p-6">
-          <p className="hand mb-4 text-3xl">Quick view</p>
-          <dl className="space-y-4">
-            {quickView.map((q) => (
-              <div key={q.k} className="border-b border-ink/10 pb-3">
-                <dt className="text-xs uppercase tracking-wide text-muted">{q.k}</dt>
-                <dd className="mt-1 text-sm text-ink/85">{q.v}</dd>
-              </div>
-            ))}
-          </dl>
+        <Reveal x={20} className="h-full">
+          <Glass variant="accent" refract className="flex h-full flex-col rounded-2xl p-6 md:p-8">
+            <p className="hand mb-4 text-3xl">Quick view</p>
+            <dl className="flex flex-1 flex-col justify-between gap-5">
+              {quickView.map((q) => (
+                <div key={q.k} className="border-b border-ink/10 pb-3 last:border-b-0 last:pb-0">
+                  <dt className="text-xs uppercase tracking-wide text-muted">{q.k}</dt>
+                  <dd className="mt-1 text-sm text-ink/85">{q.v}</dd>
+                </div>
+              ))}
+            </dl>
+          </Glass>
         </Reveal>
       </div>
     </section>

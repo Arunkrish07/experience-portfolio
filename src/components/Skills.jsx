@@ -1,4 +1,5 @@
 import Reveal, { RevealWord } from './Reveal'
+import Glass from './Glass'
 import { highlight } from '../highlight'
 import { skillApps, books, skillsIntro, skillTags } from '../data'
 
@@ -35,7 +36,7 @@ function AppIcon({ app }) {
 
 export default function Skills() {
   return (
-    <section data-nav-label="skills" className="relative px-6 py-24 md:px-10">
+    <section id="skills" data-nav-label="skills" className="relative px-6 py-24 md:px-10">
       {/* heading */}
       <div className="relative inline-block">
         <h2 className="serif text-7xl md:text-9xl">
@@ -52,7 +53,7 @@ export default function Skills() {
         {/* left: app icons lassoed */}
         <div className="relative">
           <Reveal className="relative inline-block">
-            <div className="relative flex flex-wrap gap-4 px-6 py-5">
+            <Glass variant="accent" refract className="relative flex flex-wrap gap-4 rounded-[28px] px-6 py-5">
               {skillApps.map((a) => (
                 <AppIcon key={a.label} app={a} />
               ))}
@@ -71,7 +72,7 @@ export default function Skills() {
                   vectorEffect="non-scaling-stroke"
                 />
               </svg>
-            </div>
+            </Glass>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="hand mt-4 text-2xl">the stack I build with</p>
@@ -132,7 +133,7 @@ export default function Skills() {
       </div>
 
       {/* intro + two bulleted columns */}
-      <div className="mt-20 grid gap-12 md:grid-cols-[1fr_1fr_1fr]">
+      <Glass refract className="mt-20 grid gap-12 rounded-[32px] px-6 py-9 md:grid-cols-[1fr_1fr_1fr] md:px-10 md:py-10">
         <Reveal>
           <p className="max-w-xs text-sm leading-[1.9] text-muted">{highlight(skillsIntro, SKILL_MARKS)}</p>
         </Reveal>
@@ -146,7 +147,7 @@ export default function Skills() {
             ))}
           </ul>
         ))}
-      </div>
+      </Glass>
     </section>
   )
 }

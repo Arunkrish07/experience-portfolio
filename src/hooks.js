@@ -23,9 +23,12 @@ export function useActiveLabel(defaultLabel = 'cover') {
   return label
 }
 
-// True below the given breakpoint (px).
+// True below the given breakpoint (px). Initialised synchronously so the
+// correct layout renders on the first paint (no flash on route/branch swaps).
 export function useIsMobile(bp = 768) {
-  const [m, setM] = useState(false)
+  const [m, setM] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(`(max-width:${bp - 1}px)`).matches
+  )
   useEffect(() => {
     const mq = window.matchMedia(`(max-width:${bp - 1}px)`)
     const on = () => setM(mq.matches)

@@ -117,8 +117,8 @@ export const projects = [
     accent: '#2E9E6B',
     accent2: '#A7D9B9',
     cover: null,
-    description: `A web application for tender publishing, submission and tracking for a Public
-    Welfare Department — from notice to submission to status tracking.`,
+    description: `A web application for tender publishing, submission and status tracking for a
+    Public Welfare Department.`,
     stack: ['Django', 'React'],
     links: { live: '#', github: '#' },
   },
@@ -192,12 +192,12 @@ export const funFacts = {
   note: 'the things that never fit on a CV',
   heading: 'Fun Facts',
   items: [
-    '[ your fun fact here ]',
-    '[ a hobby or interest ]',
-    '[ something you love building ]',
-    '[ a go-to coffee / food order ]',
-    '[ a place you want to visit ]',
-    '[ anything that makes you, you ]',
+    'I sketch app flows on paper before I touch any code',       // lightbulb
+    'Chennai filter coffee — two cups before the first commit',  // coffee cup
+    'I code best with lo-fi beats on loop',                      // music note
+    'Top of my travel list: Japan',                             // location pin
+    'I love turning messy manual work into a clean little app',  // heart
+    'Mostly self-taught — I learn by shipping and breaking things', // sparkle
   ],
 }
 

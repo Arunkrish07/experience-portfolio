@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import Reveal, { RevealWord } from './Reveal'
 import Handwrite from './Handwrite'
+import Glass from './Glass'
 import { contact, profile } from '../data'
 
 export default function Footer() {
@@ -48,6 +49,7 @@ export default function Footer() {
 
         {/* right: closing note */}
         <div className="flex flex-col justify-end">
+          <Glass refract className="rounded-[32px] px-6 py-8 md:px-10 md:py-10">
           <Reveal>
             <p className="hand text-2xl leading-relaxed md:text-3xl">
               {contact.closing.map((line, i) => (
@@ -93,11 +95,12 @@ export default function Footer() {
               </motion.svg>
             </div>
           </div>
+          </Glass>
         </div>
       </div>
 
       {/* bottom bar */}
-      <div className="mt-24 flex flex-col items-start justify-between gap-3 border-t border-ink/10 pt-6 text-xs text-muted md:flex-row md:items-center">
+      <Glass className="mt-24 flex flex-col items-start justify-between gap-3 rounded-full px-6 py-4 text-xs text-muted md:flex-row md:items-center">
         <span>© {profile.year} {profile.name} · Chennai, India</span>
         <div className="flex gap-5">
           {contact.socials.map((s) => (
@@ -107,7 +110,7 @@ export default function Footer() {
         <a href="#top" className="hand text-lg text-ink hover:text-accent">
           back to top ↑
         </a>
-      </div>
+      </Glass>
     </footer>
   )
 }

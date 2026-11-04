@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion'
+import { motion, useTransform } from 'framer-motion'
 import Reveal, { RevealWord } from './Reveal'
 import Phone, { CoverScreen, HomeScreen, DetailScreen } from './Phone'
+import Glass from './Glass'
 import { useIsMobile } from '../hooks'
 import { highlight } from '../highlight'
 
@@ -21,9 +22,10 @@ const TILT = [
 
 function Trio({ project }) {
   const screens = [CoverScreen, HomeScreen, DetailScreen]
+  const xs = useIsMobile(420)
   const sm = useIsMobile(640)
   const md = useIsMobile(1024)
-  const w = sm ? 104 : md ? 148 : 200
+  const w = xs ? 56 : sm ? 70 : md ? 116 : 150
   const overlap = sm ? '-mx-4' : '-mx-6'
   return (
     <div className="relative flex items-center justify-center">
@@ -51,19 +53,34 @@ function Trio({ project }) {
 
 const LINK_LABEL = { live: 'Live demo', play: 'Google Play', github: 'GitHub' }
 
-export default function CaseStudy({ project, flip = false, dark = false }) {
+export default function CaseStudy({ project, flip = false, dark = false, index = 0, total = 1, progress }) {
   const theme = dark
     ? { bg: 'bg-dark', title: 'text-paper', body: 'text-paper/80', border: 'border-white/10', chip: 'border-white/25 text-paper/80' }
     : { bg: 'bg-paper', title: 'text-ink', body: 'text-ink/80', border: 'border-ink/10', chip: 'border-ink/20 text-ink/70' }
 
   const links = Object.entries(project.links || {}).filter(([, v]) => v)
 
+  // Stacking-cards motion: each card sticks, and earlier cards scale down as the
+  // next one slides up over them. Card contents are untouched.
+  const scaleTo = 1 - (total - 1 - index) * 0.035
+  const scale = useTransform(progress, [index / total, 1], [1, scaleTo])
+
   return (
-    <section
-      id={project.id}
-      data-nav-label={project.name.split(' ')[0].toLowerCase()}
-      className={`scroll-mt-20 border-t ${theme.border} ${theme.bg} px-6 py-24 md:px-10 md:py-32`}
-    >
+    <>
+      {/* non-sticky anchor marker at this card's flow position, so hash links
+          (e.g. a phone tap → #id) scroll here reliably despite the sticky stack */}
+      <span id={project.id} aria-hidden className="block h-0 scroll-mt-24" />
+      <div className="sticky px-4 md:px-6" style={{ top: `${76 + index * 12}px` }}>
+        <motion.section
+          data-nav-label={project.name.split(' ')[0].toLowerCase()}
+          style={{ scale }}
+          className={`mx-auto max-w-5xl origin-top overflow-hidden rounded-[32px] ${theme.bg} shadow-[0_30px_70px_-24px_rgba(0,0,0,0.5)]`}
+        >
+      <Glass
+        variant={dark ? 'dark' : 'light'}
+        refract
+        className="rounded-[32px] px-5 py-6 md:px-10 md:py-8"
+      >
       <Reveal className="flex items-center gap-3">
         <p className="text-xs uppercase tracking-[0.25em] text-muted">
           {project.index} — {project.category}
@@ -78,23 +95,23 @@ export default function CaseStudy({ project, flip = false, dark = false }) {
         )}
       </Reveal>
 
-      <div className={`mt-6 grid items-center gap-16 md:grid-cols-2 md:gap-20 ${flip ? 'md:[&>*:first-child]:order-2' : ''}`}>
+      <div className={`mt-4 grid items-center gap-5 md:grid-cols-2 md:gap-10 ${flip ? 'md:[&>*:first-child]:order-2' : ''}`}>
         {/* text column */}
         <div>
-          <h3 className={`serif text-5xl leading-none md:text-7xl ${theme.title}`}>
+          <h3 className={`serif text-3xl leading-[1.08] sm:text-4xl md:text-5xl lg:text-6xl ${theme.title}`}>
             <RevealWord text={project.name} stagger={0.04} />
           </h3>
           <Reveal delay={0.1}>
-            <p className="mt-4 text-lg italic text-accent">{project.tagline}</p>
+            <p className="mt-2.5 text-base italic text-accent">{project.tagline}</p>
           </Reveal>
           <Reveal delay={0.14}>
-            <p className={`mt-4 max-w-xl text-lg leading-[1.9] ${theme.body}`}>
+            <p className={`mt-2.5 max-w-xl text-sm leading-[1.6] md:text-[15px] ${theme.body}`}>
               {highlight(project.description, PROJECT_MARKS[project.id] || [])}
             </p>
           </Reveal>
 
           {project.stack.length > 0 && (
-            <Reveal delay={0.18} className="mt-6 flex flex-wrap gap-2">
+            <Reveal delay={0.18} className="mt-4 flex flex-wrap gap-2">
               {project.stack.map((s) => (
                 <span key={s} className={`rounded-full border px-3 py-1 text-xs ${theme.chip}`}>
                   {s}
@@ -104,7 +121,7 @@ export default function CaseStudy({ project, flip = false, dark = false }) {
           )}
 
           {links.length > 0 && (
-            <Reveal delay={0.22} className="mt-8 flex flex-wrap gap-4">
+            <Reveal delay={0.22} className="mt-5 flex flex-wrap gap-4">
               {links.map(([k, href]) => (
                 <a
                   key={k}
@@ -121,6 +138,9 @@ export default function CaseStudy({ project, flip = false, dark = false }) {
         {/* fanned phone trio */}
         <Trio project={project} />
       </div>
-    </section>
+        </Glass>
+        </motion.section>
+      </div>
+    </>
   )
 }

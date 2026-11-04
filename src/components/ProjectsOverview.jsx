@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import Phone, { CoverScreen } from './Phone'
+import Glass from './Glass'
 import { projects } from '../data'
 import { useIsMobile } from '../hooks'
 
@@ -44,6 +45,7 @@ function PhoneCard({ project, i, count, progress, cfg, showLabel }) {
 
 export default function ProjectsOverview() {
   const ref = useRef(null)
+  const xs = useIsMobile(420)
   const sm = useIsMobile(640)
   const md = useIsMobile(1024)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
@@ -51,9 +53,11 @@ export default function ProjectsOverview() {
   const headOpacity = useTransform(progress, [0, 0.15], [0, 1])
   const headY = useTransform(progress, [0, 0.15], [30, 0])
 
-  // responsive layout config
-  const cfg = sm
-    ? { w: 100, scatterX: 58, scatterRot: 6, finalGap: 66, finalRot: 4 } // mobile: light fan, more spacing (fits ~380px)
+  // responsive layout config — span must fit the viewport at every breakpoint
+  const cfg = xs
+    ? { w: 72, scatterX: 42, scatterRot: 6, finalGap: 48, finalRot: 3 } // small phones (~320–420px)
+    : sm
+    ? { w: 92, scatterX: 56, scatterRot: 6, finalGap: 58, finalRot: 4 } // large phones (~420–640px)
     : md
     ? { w: 120, scatterX: 100, scatterRot: 6, finalGap: 132, finalRot: 0 } // tablet: row
     : { w: 150, scatterX: 135, scatterRot: 6, finalGap: 168, finalRot: 0 } // desktop: row
@@ -71,6 +75,11 @@ export default function ProjectsOverview() {
         </motion.div>
 
         <div className="relative mx-auto mt-6 w-full md:mt-8" style={{ height: stageH }}>
+          <Glass
+            variant="dark"
+            refract
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[110%] w-[94%] -translate-x-1/2 -translate-y-1/2 rounded-[28px] md:h-[116%] md:w-[min(97%,1060px)] md:rounded-[40px]"
+          />
           {projects.map((p, i) => (
             <PhoneCard key={p.id} project={p} i={i} count={projects.length} progress={progress} cfg={cfg} showLabel={!sm} />
           ))}

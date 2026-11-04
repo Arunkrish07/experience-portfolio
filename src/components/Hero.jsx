@@ -5,6 +5,7 @@ import OrbitStar from './OrbitStar'
 import InkTrail from './InkTrail'
 import Handwrite from './Handwrite'
 import Mark from './Mark'
+import HeroTunnelCards from './HeroTunnelCards'
 
 // One hero letter: an outer layer driven by scroll (split + rise + tilt),
 // and an inner layer that springs up on mount.
@@ -47,7 +48,7 @@ function HeroTitle({ text, progress }) {
   const scale = useTransform(progress, [0, 1], [1, 0.9])
   return (
     <motion.h1
-      className="serif relative mx-auto whitespace-nowrap leading-[0.8] text-ink text-[clamp(2.6rem,15vw,16rem)]"
+      className="serif relative mx-auto whitespace-nowrap leading-[0.8] text-ink text-[clamp(2rem,10vw,9.5rem)]"
       style={{ scale }}
     >
       {letters.map((ch, i) => (
@@ -59,16 +60,18 @@ function HeroTitle({ text, progress }) {
 
 export default function Hero() {
   const ref = useRef(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 })
+  // cards complete their fly-through by 80% of the pinned scroll, so the
+  // animation clearly finishes before the hero releases to the next section
+  const cardsProgress = useTransform(progress, [0, 0.8], [0, 1])
 
   return (
-    <section
-      id="top"
-      ref={ref}
-      data-nav-label="cover"
-      className="paper-grain relative flex min-h-screen flex-col justify-between overflow-hidden px-6 pb-10 pt-28 md:px-10"
-    >
+    <section id="top" ref={ref} data-nav-label="cover" className="relative h-[240vh]">
+      <div className="paper-grain sticky top-0 flex h-screen flex-col justify-between overflow-hidden px-6 pb-10 pt-28 md:px-10">
+      {/* flying project + skill cards — animation only, behind all content */}
+      <HeroTunnelCards progress={cardsProgress} />
+
       {/* visitor can "write" here with the cursor — blue ink */}
       <InkTrail color="#7D84EF" width={3.5} />
 
@@ -113,6 +116,9 @@ export default function Hero() {
             </svg>
           </motion.div>
 
+          <p className="serif mb-1 text-center text-xl font-semibold italic text-accent sm:text-2xl md:mb-2 md:text-3xl">
+            Let's see my
+          </p>
           <HeroTitle text={profile.heroWord} progress={progress} />
         </div>
       </div>
@@ -147,6 +153,7 @@ export default function Hero() {
           <span className="block h-8 w-px bg-muted" />
         </motion.div>
       </motion.div>
+      </div>
     </section>
   )
 }
