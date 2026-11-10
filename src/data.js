@@ -101,11 +101,15 @@ export const projects = [
     tagline: 'Outpatient seat allocation and queuing that improves patient flow.',
     accent: '#5B8DEF',
     accent2: '#A9C6F6',
-    cover: null, // [add screenshot]
+    cover: '/healthcare/landing.jpg',
+    screens: ['/healthcare/landing.jpg', '/healthcare/login.jpg', '/healthcare/dashboard.jpg'],
     description: `A system that manages outpatient seat allocation and queuing for a healthcare
     provider, improving patient flow and appointment handling.`,
     stack: [], // [add stack]
-    links: { live: '#', github: '#' }, // [add links]
+    links: {
+      live: 'https://ehealth.anvastech.in',
+      github: 'https://github.com/Arunkrish07/Health-care-outpatient-OP-seat-processing-system',
+    },
   },
   {
     id: 'tender-management',
@@ -116,7 +120,8 @@ export const projects = [
     tagline: 'Tender publishing, submission and tracking for a public welfare department.',
     accent: '#2E9E6B',
     accent2: '#A7D9B9',
-    cover: null,
+    cover: '/tender/signin.jpg',
+    screens: ['/tender/signin.jpg', '/tender/districts.jpg', '/tender/admin.jpg'],
     description: `A web application for tender publishing, submission and status tracking for a
     Public Welfare Department.`,
     stack: ['Django', 'React'],
@@ -131,11 +136,16 @@ export const projects = [
     tagline: 'Property listing, tracking and management across web and mobile.',
     accent: '#C7893B',
     accent2: '#E6C79A',
-    cover: null,
+    cover: '/property/financials.jpg',
+    screens: ['/property/financials.jpg', '/property/electricity.jpg', '/property/tickets.jpg'],
     description: `An app for property listing, tracking and management across web and mobile,
     with a shared data layer between platforms.`,
     stack: ['React', 'React Native'],
-    links: { live: '#', github: '#' },
+    links: {
+      live: 'https://www.vishful.co.in',
+      play: 'https://play.google.com/store/apps/details?id=dev.a0.apps.vishfulpm538',
+      github: 'https://github.com/Arunkrish07/vishful-mobile',
+    },
   },
   {
     id: 'attendance-app',
@@ -146,26 +156,34 @@ export const projects = [
     tagline: 'Real-time attendance capture and reporting.',
     accent: '#9AA050',
     accent2: '#CBCF93',
-    cover: null,
+    cover: '/attendance/dashboard.jpg',
+    screens: ['/attendance/dashboard.jpg', '/attendance/facescan.jpg', '/attendance/settings.jpg'],
     description: `A mobile app for real-time attendance capture and reporting, with a Supabase
     backend. Published on Google Play.`,
     stack: ['React Native', 'Supabase'],
-    links: { play: '#', github: '#' }, // [add Google Play link]
+    links: {
+      play: 'https://play.google.com/store/apps/details?id=dev.a0.apps.a0filetransfer968',
+      github: 'https://github.com/Arunkrish07/attendance-app',
+    },
   },
   {
     id: 'fintech-app',
     index: '05',
     name: 'Fintech App',
-    category: 'Mobile application · Fintech',
-    tag: 'on Google Play',
-    tagline: 'Core financial transaction workflows with secure backend services.',
+    category: 'Web application · Fintech',
+    tag: 'finance',
+    tagline: 'Business finance management with live cash-flow dashboards.',
     accent: '#7D84EF',
     accent2: '#BFC3F7',
-    cover: null,
-    description: `A mobile app covering core financial transaction workflows, backed by secure
-    services on Supabase and SQL. Published on Google Play.`,
-    stack: ['React Native', 'Supabase', 'SQL'],
-    links: { play: '#', github: '#' },
+    cover: '/fintech/overview.jpg',
+    screens: ['/fintech/collections.jpg', '/fintech/loans.jpg', '/fintech/overview.jpg'],
+    description: `A web application for business finance — tracking income, expenses and cash flow,
+    bank loans and EMIs, and rental collections across live dashboards.`,
+    stack: ['React', 'Supabase', 'SQL'],
+    links: {
+      live: 'https://my-personal-fintrack.vercel.app',
+      github: 'https://github.com/Arunkrish07/my-personal-fintrack',
+    },
   },
 ]
 

@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, useTransform } from 'framer-motion'
 import Reveal, { RevealWord } from './Reveal'
-import Phone, { CoverScreen, HomeScreen, DetailScreen } from './Phone'
+import Phone, { CoverScreen, HomeScreen, DetailScreen, ScreenShot } from './Phone'
 import Glass from './Glass'
 import { useIsMobile } from '../hooks'
 import { highlight } from '../highlight'
@@ -11,7 +13,7 @@ const PROJECT_MARKS = {
   'tender-management': [{ p: 'status tracking', t: 'circle' }, { p: 'tender publishing', t: 'underline' }],
   'property-management': [{ p: 'across web and mobile', t: 'circle' }, { p: 'shared data layer', t: 'underline' }],
   'attendance-app': [{ p: 'real-time attendance', t: 'underline' }, { p: 'Google Play', t: 'circle' }],
-  'fintech-app': [{ p: 'secure services', t: 'circle' }, { p: 'Google Play', t: 'underline' }],
+  'fintech-app': [{ p: 'cash flow', t: 'circle' }, { p: 'bank loans and EMIs', t: 'underline' }],
 }
 
 const TILT = [
@@ -25,12 +27,29 @@ function Trio({ project }) {
   const xs = useIsMobile(420)
   const sm = useIsMobile(640)
   const md = useIsMobile(1024)
-  const w = xs ? 56 : sm ? 70 : md ? 116 : 150
+  const w = xs ? 58 : sm ? 74 : md ? 124 : 162
   const overlap = sm ? '-mx-4' : '-mx-6'
+  const [zoom, setZoom] = useState(null)
+
+  // lock scroll + close on Escape while the zoom overlay is open
+  useEffect(() => {
+    if (zoom === null) return
+    const onKey = (e) => e.key === 'Escape' && setZoom(null)
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [zoom])
+
+  const shots = project.screens || []
+
   return (
     <div className="relative flex items-center justify-center">
       {screens.map((Screen, i) => {
         const t = TILT[i]
+        const shot = shots[i]
         return (
           <motion.div
             key={i}
@@ -41,12 +60,51 @@ function Trio({ project }) {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ type: 'spring', stiffness: 120, damping: 18, delay: i * 0.12 }}
           >
-            <Phone w={w}>
-              <Screen project={project} />
-            </Phone>
+            {shot ? (
+              <button
+                type="button"
+                onClick={() => setZoom(i)}
+                aria-label={`View ${project.name} screen ${i + 1} full size`}
+                className="block cursor-zoom-in rounded-[18%] outline-none ring-accent/60 transition-transform hover:-translate-y-1 focus-visible:ring-2"
+              >
+                <Phone w={w}>
+                  <ScreenShot src={shot} alt={`${project.name} screen ${i + 1}`} />
+                </Phone>
+              </button>
+            ) : (
+              <Phone w={w}>
+                <Screen project={project} />
+              </Phone>
+            )}
           </motion.div>
         )
       })}
+
+      {zoom !== null &&
+        createPortal(
+          <div
+            onClick={() => setZoom(null)}
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+          >
+            <img
+              src={shots[zoom]}
+              alt={`${project.name} screen ${zoom + 1}`}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[92vh] max-w-[min(100%,480px)] rounded-[28px] object-contain shadow-2xl ring-1 ring-white/15"
+            />
+            <button
+              type="button"
+              onClick={() => setZoom(null)}
+              aria-label="Close"
+              className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/15 text-xl text-white transition-colors hover:bg-white/25"
+            >
+              ✕
+            </button>
+          </div>,
+          document.body
+        )}
     </div>
   )
 }
@@ -78,8 +136,7 @@ export default function CaseStudy({ project, flip = false, dark = false, index =
         >
       <Glass
         variant={dark ? 'dark' : 'light'}
-        refract
-        className="rounded-[32px] px-5 py-6 md:px-10 md:py-8"
+        className="lg--solid rounded-[32px] px-5 py-6 md:px-10 md:py-8"
       >
       <Reveal className="flex items-center gap-3">
         <p className="text-xs uppercase tracking-[0.25em] text-muted">
@@ -95,10 +152,10 @@ export default function CaseStudy({ project, flip = false, dark = false, index =
         )}
       </Reveal>
 
-      <div className={`mt-4 grid items-center gap-5 md:grid-cols-2 md:gap-10 ${flip ? 'md:[&>*:first-child]:order-2' : ''}`}>
+      <div className={`mt-4 grid items-start gap-5 md:grid-cols-2 md:gap-10 ${flip ? 'md:[&>*:first-child]:order-2' : ''}`}>
         {/* text column */}
         <div>
-          <h3 className={`serif text-3xl leading-[1.08] sm:text-4xl md:text-5xl lg:text-6xl ${theme.title}`}>
+          <h3 className={`serif text-3xl leading-[1.05] sm:text-4xl md:text-5xl lg:text-[3.25rem] ${theme.title}`}>
             <RevealWord text={project.name} stagger={0.04} />
           </h3>
           <Reveal delay={0.1}>
@@ -121,11 +178,13 @@ export default function CaseStudy({ project, flip = false, dark = false, index =
           )}
 
           {links.length > 0 && (
-            <Reveal delay={0.22} className="mt-5 flex flex-wrap gap-4">
+            <Reveal delay={0.22} className="mt-4 flex flex-wrap gap-4">
               {links.map(([k, href]) => (
                 <a
                   key={k}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`text-sm underline-offset-4 hover:underline ${theme.title}`}
                 >
                   {LINK_LABEL[k] || k} ↗

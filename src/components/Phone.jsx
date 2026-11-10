@@ -46,6 +46,15 @@ export function StatusBar({ light = true }) {
   )
 }
 
+// Full-bleed real app screenshot (fills the whole phone screen).
+export function ScreenShot({ src, alt = '' }) {
+  return (
+    <div className="h-full w-full bg-dark">
+      <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover object-top" />
+    </div>
+  )
+}
+
 function Bg({ project }) {
   if (project.cover) {
     return <img src={project.cover} alt="" className="absolute inset-0 h-full w-full object-cover" />
@@ -63,7 +72,7 @@ export function CoverScreen({ project }) {
   return (
     <div className="relative h-full w-full">
       <Bg project={project} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
       <div className="relative flex h-full flex-col">
         <StatusBar />
         <div className="mt-auto px-5 pb-7 text-white">

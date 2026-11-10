@@ -49,7 +49,7 @@ export default function Footer() {
 
         {/* right: closing note */}
         <div className="flex flex-col justify-end">
-          <Glass refract className="rounded-[32px] px-6 py-8 md:px-10 md:py-10">
+          <Glass refract className="rounded-[32px] px-5 py-6 md:px-10 md:py-10">
           <Reveal>
             <p className="hand text-2xl leading-relaxed md:text-3xl">
               {contact.closing.map((line, i) => (
@@ -73,11 +73,11 @@ export default function Footer() {
                 start="view"
                 stagger={0.09}
                 color="#7D84EF"
-                className="hand text-5xl"
+                className="hand text-4xl sm:text-5xl"
               />
               {/* signature flourish — draws on after the name finishes typing */}
               <motion.svg
-                className="-mt-1 h-12 w-56"
+                className="-mt-1 h-9 w-40 sm:h-12 sm:w-56"
                 viewBox="0 0 260 60"
                 fill="none"
                 initial="hidden"
