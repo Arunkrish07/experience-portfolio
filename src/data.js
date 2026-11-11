@@ -125,7 +125,10 @@ export const projects = [
     description: `A web application for tender publishing, submission and status tracking for a
     Public Welfare Department.`,
     stack: ['Django', 'React'],
-    links: { live: '#', github: '#' },
+    links: {
+      live: 'https://marketvendorplace.vercel.app/',
+      github: 'https://github.com/Arunkrish07/marketvendorplace.git',
+    },
   },
   {
     id: 'property-management',

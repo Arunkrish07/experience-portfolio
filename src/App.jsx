@@ -10,6 +10,7 @@ import FunFacts from './components/FunFacts'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
 import { GlassDefs } from './components/Glass'
+import DuckChatbot from './chatbot/DuckChatbot'
 import { projects } from './data'
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
         <FunFacts />
         <Footer />
       </main>
+      <DuckChatbot />
     </div>
   )
 }
