@@ -17,12 +17,27 @@ import { buildSystemPrompt } from '../src/chatbot/knowledge.js'
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 export default async function handler(req, res) {
+  const apiKey = process.env.GROQ_API_KEY
+
+  // Diagnostic: GET lists the models this key can access.
+  if (req.method === 'GET') {
+    if (!apiKey) {
+      res.status(503).json({ error: 'GROQ_API_KEY not set' })
+      return
+    }
+    const r = await fetch('https://api.groq.com/openai/v1/models', {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    })
+    const j = await r.json().catch(() => ({}))
+    res.status(200).json({ ok: r.ok, status: r.status, models: (j.data || []).map((m) => m.id) })
+    return
+  }
+
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' })
     return
   }
 
-  const apiKey = process.env.GROQ_API_KEY
   if (!apiKey) {
     // No key configured → tell the client to use its offline fallback.
     res.status(503).json({ error: 'AI backend not configured' })
