@@ -56,37 +56,54 @@ export default async function handler(req, res) {
     return
   }
 
-  const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
   const messages = [{ role: 'system', content: buildSystemPrompt() }, ...history]
 
-  // Stream back as Server-Sent Events (same contract the frontend expects).
-  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
-  res.setHeader('Cache-Control', 'no-cache, no-transform')
-  res.setHeader('Connection', 'keep-alive')
-  res.flushHeaders?.()
+  // Try the configured model first, then fall back through widely-available
+  // Groq models (availability varies per account / changes over time).
+  const candidates = [
+    process.env.GROQ_MODEL,
+    'llama-3.1-8b-instant',
+    'llama-3.3-70b-versatile',
+    'gemma2-9b-it',
+    'llama3-8b-8192',
+  ].filter((m, i, a) => m && a.indexOf(m) === i)
 
   try {
-    const upstream = await fetch(GROQ_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model,
-        messages,
-        stream: true,
-        temperature: 0.5,
-        max_tokens: 512,
-      }),
-    })
+    let upstream = null
+    let lastErr = ''
+    for (const model of candidates) {
+      const r = await fetch(GROQ_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          stream: true,
+          temperature: 0.5,
+          max_tokens: 512,
+        }),
+      })
+      if (r.ok && r.body) {
+        upstream = r
+        break
+      }
+      lastErr = `${r.status} ${(await r.text().catch(() => '')).slice(0, 200)}`
+    }
 
-    if (!upstream.ok || !upstream.body) {
-      const errText = await upstream.text().catch(() => '')
-      res.write(`data: ${JSON.stringify({ error: `${upstream.status} ${errText.slice(0, 300)}` })}\n\n`)
-      res.end()
+    if (!upstream) {
+      // nothing worked → let the client fall back to keyword answers
+      res.status(502).json({ error: lastErr || 'no_model_available' })
       return
     }
+
+    // Stream back as Server-Sent Events (same contract the frontend expects).
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
+    res.setHeader('Cache-Control', 'no-cache, no-transform')
+    res.setHeader('Connection', 'keep-alive')
+    res.flushHeaders?.()
 
     // Parse Groq's OpenAI-style SSE and re-emit our {delta} events.
     const reader = upstream.body.getReader()
