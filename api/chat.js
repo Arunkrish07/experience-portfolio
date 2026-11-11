@@ -62,8 +62,8 @@ export default async function handler(req, res) {
   // Groq models (availability varies per account / changes over time).
   const candidates = [
     process.env.GROQ_MODEL,
-    'openai/gpt-oss-20b',
     'openai/gpt-oss-120b',
+    'openai/gpt-oss-20b',
     'qwen/qwen3.8-27b',
   ].filter((m, i, a) => m && a.indexOf(m) === i)
 
