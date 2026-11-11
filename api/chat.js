@@ -82,7 +82,7 @@ export default async function handler(req, res) {
           messages,
           stream: true,
           temperature: 0.7,
-          max_tokens: 160,
+          max_tokens: 240,
         }),
       })
       if (r.ok && r.body) {
