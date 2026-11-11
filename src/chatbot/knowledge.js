@@ -13,7 +13,7 @@ import {
   projects,
   howIBuild,
   contact,
-} from '../data'
+} from '../data.js'
 
 const clean = (s) => String(s || '').replace(/\s+/g, ' ').trim()
 
